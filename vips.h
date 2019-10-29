@@ -32,7 +32,8 @@ enum types {
 	GIF,
 	PDF,
 	SVG,
-	MAGICK
+	MAGICK,
+	HEIC
 };
 
 typedef struct {
@@ -156,6 +157,9 @@ vips_type_find_bridge(int t) {
 	if (t == MAGICK) {
 		return vips_type_find("VipsOperation", "magickload");
 	}
+	if (t == HEIC) {
+  		return vips_type_find("VipsOperation", "heifload");
+  }
 	return 0;
 }
 
@@ -173,6 +177,9 @@ vips_type_find_save_bridge(int t) {
 	if (t == JPEG) {
 		return vips_type_find("VipsOperation", "jpegsave_buffer");
 	}
+	if (t == HEIC) {
+  		return vips_type_find("VipsOperation", "heifsave_buffer");
+  }
 	return 0;
 }
 
@@ -365,6 +372,8 @@ vips_init_image (void *buf, size_t len, int imageType, VipsImage **out) {
 		code = vips_gifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 	} else if (imageType == PDF) {
 		code = vips_pdfload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
+	} else if (imageType == HEIC) {
+			code = vips_heifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 	} else if (imageType == SVG) {
 		code = vips_svgload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 #endif

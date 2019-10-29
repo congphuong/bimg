@@ -185,6 +185,9 @@ func VipsIsTypeSupported(t ImageType) bool {
 	if t == MAGICK {
 		return int(C.vips_type_find_bridge(C.MAGICK)) != 0
 	}
+	if t == HEIC {
+		return int(C.vips_type_find_bridge(C.HEIC)) != 0
+	}
 	return false
 }
 
@@ -633,6 +636,9 @@ func vipsImageType(buf []byte) ImageType {
 	}
 	if IsTypeSupported(MAGICK) && strings.HasSuffix(readImageType(buf), "MagickBuffer") {
 		return MAGICK
+	}
+	if IsTypeSupported(HEIC) {
+		return HEIC
 	}
 
 	return UNKNOWN
